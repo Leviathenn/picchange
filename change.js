@@ -27,21 +27,72 @@
         return CryptoJS.MD5(text).toString();
       }
 
-      // Set 1: Access information about the user.
-      const studentInfo = {
-        studentName: document.querySelector('h2'),
-        studentId: document.querySelector('.info').querySelectorAll('span')[0],
-        studentSchool: document.querySelector('.info').querySelectorAll('span')[1]
-
-    }
-
+      const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+      
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+          const slice = byteCharacters.slice(offset, offset + sliceSize);
+      
+          const byteNumbers = new Array(slice.length);
+          for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+          }
+      
+          const byteArray = new Uint8Array(byteNumbers);
+          byteArrays.push(byteArray);
+        }
+      
+        const blob = new Blob(byteArrays, {type: contentType});
+        return blob;
+      }
+    
+      // Set 1: Access information about the user
       let homePic;
-      if(document.location.pathname = "/Home_PXP2.aspx"){
+      if(document.location.pathname == "/HOME_PXP2.aspx"){
+        const studentInfo = {
+          studentName: document.querySelector('h2').querySelector('span').textContent,
+          studentId: document.querySelector('.info').querySelectorAll('span')[0].textContent,
+          studentSchool: document.querySelector('.info').querySelectorAll('span')[1].textContent 
+        }
         homePic = document.querySelector('.student-image').querySelector('img')
       }else{
         homePic = {'error': 'Invalid Pathname', 'message': 'User is not on the home page.'};
+        const studentInfo = {
+          studentName: document.querySelector('.student-name').textContent,
+          studentId: document.querySelector('.student-id').textContent,
+          studentSchool: document.querySelector('.school').textContent
+
+        }
+        
+
+    }
+    //Easist way for a kill switch.\\
+    let processDuping = false;
+    let processes = []
+    let process = {
+      changeStudentPhoto = (studentInfo, additionalInfo)=>{
+        let pErr;
+        processes.forEach(p => {
+          if(p.name == "Change Student Photo"){
+            if(processDuping){
+              pErr = false;
+            }else{
+              pErr = true;
+            }
+          }else{
+            pErr = false;
+          }
+        });
+        if(document.location.pathname == "/HOME_PXP2.aspx"){
+          if(localStorage.getItem('csp')){
+            
+          }
+        }
       }
-      let
+        }
+
+    
 
 
     };
